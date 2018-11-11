@@ -1,16 +1,16 @@
-# genmap.js
+# genmap2d.js
 > Assembly and disassembly of URL address
 
 ## Install
 
 **Client**
 ```html
-<script type="text/javascript" src="genmap.js"></script>
+<script type="text/javascript" src="genmap2d.js"></script>
 ```
 
 **Server**
 ```sh
-npm i genmap
+npm i genmap2d
 ```
 
 ## Usage
