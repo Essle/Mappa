@@ -1,5 +1,5 @@
 # genmap2d.js
-> Assembly and disassembly of URL address
+> Generation of 2D maps
 
 ## Install
 
