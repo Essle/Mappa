@@ -1,59 +1,33 @@
-var genmap_util = {};
-	
-genmap_util.lerp = function (t, a, b) {
-	return a + t * (b - a);
-};
+/**
+ * Generation of 2D maps
+ *
+ * @param {Object} params - Params of generation
+ * @param {number} [params.width=800] - Length X of array
+ * @param {number} [params.height=600] - Length Y of array
+ * @param {number} [params.rarity=100] - Rarity of coverage
+ * @param {number} [params.density=0.45] - Density of coverage
+ *
+ * @return {number[][]}
+ */
+module.exports = (params = {}) => {
 
-genmap_util.fade = function (t) {
-	return t * t * t * (t * (t * 6 - 15) + 10);
-};
-
-genmap_util.grad = function (hash, x, y) {
-	var u = (hash & 2) === 0 ? x : -x;
-	var v = (hash & 1) === 0 ? y : -y;
-	return u + v;
-};
-
-genmap_util.noise = function (values, x, y) {
-
-	var intX = (0 | x) & 0xff,
-		intY = (0 | y) & 0xff;
-		fracX = x - (0 | x),
-		fracY = y - (0 | y);
-	var r1 = values[intX] + intY,
-		r2 = values[intX + 1] + intY;
-	var t1 = genmap_util.fade(fracX),
-		t2 = genmap_util.fade(fracY),
-		a1 = genmap_util.grad(values[r1], fracX, fracY),
-		a2 = genmap_util.grad(values[r1 + 1], fracX, fracY - 1),
-		b1 = genmap_util.grad(values[r2], fracX - 1, fracY),
-		b2 = genmap_util.grad(values[r2 + 1], fracX - 1, fracY - 1);
-
-	return genmap_util.lerp(t2, genmap_util.lerp(t1, a1, b1), genmap_util.lerp(t1, a2, b2));
-
-};
-
-var genmap = function (params) {
-
-	params = params || {};
-	params.rarity = params.rarity || 100;
-	params.density = params.density || 0.45;
 	params.width = params.width || 800;
 	params.height = params.height || 600;
+	params.rarity = params.rarity || 100;
+	params.density = params.density || 0.45;
 
-	var size = 0xff + 1;
-	var values = new Uint8Array(size * 2);
-	for (var i = 0; i < size; i++) {
+	const size = 0xff + 1;
+	const values = new Uint8Array(size * 2);
+	for (let i = 0; i < size; i++) {
 		values[i] = values[size + i] = 0 | (Math.random() * 0xff);
 	}
 
-	var map2d = [];
-
-	for (var i = 0; i < params.width; ++i) {
+	const map2d = [];
+	for (let i = 0; i < params.width; ++i) {
 		map2d[i] = [];
-		for (var j = 0; j < params.height; ++j) {
-			map2d[i][j] = genmap_util.noise(values, i / params.rarity, j / params.rarity);
-			map2d[i][j] = (Math.max(0, Math.min(1, (1 + map2d[i][j]) / 2)) < params.density ? 0 : 1);
+		for (let j = 0; j < params.height; ++j) {
+			const w = utils.noise(values, i / params.rarity, j / params.rarity);
+			map2d[i][j] = (Math.max(0, Math.min(1, (1 + w) / 2)) < params.density) ? 0 : 1;
 		}
 	}
 
@@ -61,4 +35,21 @@ var genmap = function (params) {
 
 };
 
-module.exports = genmap;
+const utils = {
+	lerp: (t, a, b) => (a + t * (b - a)),
+	fade: (t) => (t * t * t * (t * (t * 6 - 15) + 10)),
+	grad: (hash, x, y) => {
+		const u = (hash & 2) === 0 ? x : -x;
+		const v = (hash & 1) === 0 ? y : -y;
+		return u + v;
+	},
+	noise: (values, x, y) => {
+		const int = [(0 | x) & 0xff, (0 | y) & 0xff];
+		const frac = [x - (0 | x), y - (0 | y)];
+		const r = [values[int[0]] + int[1], values[int[0] + 1] + int[1]];
+		const t = [utils.fade(frac[0]), utils.fade(frac[1])];
+		const a = [utils.grad(values[r[0]], frac[0], frac[1]), utils.grad(values[r[0] + 1], frac[0], frac[1] - 1)];
+		const b = [utils.grad(values[r[1]], frac[0] - 1, frac[1]), utils.grad(values[r[1] + 1], frac[0] - 1, frac[1] - 1)];
+		return utils.lerp(t[1], utils.lerp(t[0], a[0], b[0]), utils.lerp(t[0], a[1], b[1]));
+	},
+};
