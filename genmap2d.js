@@ -11,10 +11,13 @@
  */
 module.exports = (params = {}) => {
 
-	params.width = params.width || 800;
-	params.height = params.height || 600;
-	params.rarity = params.rarity || 100;
-	params.density = params.density || 0.45;
+	params = {
+		width: 800,
+		height: 600,
+		rarity: 100,
+		density: 0.45,
+		...params,
+	};
 
 	const size = 0xff + 1;
 	const values = new Uint8Array(size * 2);
@@ -35,6 +38,9 @@ module.exports = (params = {}) => {
 
 };
 
+/**
+ * Math utils
+ */
 const utils = {
 	lerp: (t, a, b) => (a + t * (b - a)),
 	fade: (t) => (t * t * t * (t * (t * 6 - 15) + 10)),
