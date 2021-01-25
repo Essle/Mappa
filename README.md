@@ -3,12 +3,9 @@
 
 ## Install
 
-**Client**
 ```html
 <script type="text/javascript" src="genmap2d.js"></script>
 ```
-
-**Server**
 ```sh
 npm i genmap2d
 ```
