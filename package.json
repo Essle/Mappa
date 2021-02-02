@@ -1,7 +1,7 @@
 {
 	"name": "genmap2d",
 	"description": "Generation of 2D maps",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"author": {
 		"name": "Essle Jaxcate",
 		"email": "me@essle.ru",
@@ -13,7 +13,7 @@
 		"noise"
 	],
 	"license": "MIT",
-	"main": "genmap2d.js",
+	"main": "index.js",
 	"homepage": "https://github.com/essle/genmap2d#readme",
 	"repository": {
 		"type": "git",

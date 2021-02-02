@@ -3,9 +3,6 @@
 
 ## Install
 
-```html
-<script type="text/javascript" src="genmap2d.js"></script>
-```
 ```sh
 npm i genmap2d
 ```
@@ -13,7 +10,8 @@ npm i genmap2d
 ## Usage
 
 ```js
-var MAP = genmap({
+const genmap2d = require('genmap2d');
+const map = genmap2d({
   /* configuration */ 
 });
 ```
@@ -29,30 +27,31 @@ var MAP = genmap({
 ## Example
 
 ```js
-var SETTINGS = {
+const CONFIG = {
   width: 800,
   height: 600
 };
 
 // Generation of map
-var MAP = genmap(SETTINGS); 
+const genmap2d = require('genmap2d');
+const map = genmap2d(CONFIG); 
 
 // Creating canvas
-var field = document.getElementById('field').getContext('2d');
+const field = document.getElementById('field').getContext('2d');
 
 // Creating image
-var imageData = field.createImageData(SETTINGS.width, SETTINGS.height);
-var data = imageData.data;
+const imageData = field.createImageData(CONFIG.width, CONFIG.height);
+const data = imageData.data;
 
 // Filling image from map
-for(var i = 0; i < SETTINGS.width; ++i) {
-  for(var j = 0; j < SETTINGS.height; ++j) {
-    var x = (j * SETTINGS.width + i) * 4;
-    data[x + 0] = 0x00;
-    data[x + 1] = 0x00;
-    data[x + 2] = 0x00;
+for(let i = 0; i < CONFIG.width; ++i) {
+  for(let j = 0; j < CONFIG.height; ++j) {
+    const x = (j * CONFIG.width + i) * 4;
+    for (let c = 0; c < 3; c++) {
+        data[x + c] = 0;
+    }
     // Set pixel transparency (0 or 255)
-    data[x + 3] = MAP[i][j] * 255;
+    data[x + 3] = map[i][j] * 255;
   }
 }
 
