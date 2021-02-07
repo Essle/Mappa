@@ -1,13 +1,20 @@
-# genmap2d.js
-> Generation of 2D maps
-
-## Install
+## Generation of 2D maps
+.
+* ### Install
 
 ```sh
 npm i genmap2d
 ```
 
-## Usage
+* ### Configuration
+| Parameter | Type | Default |
+| --- | --- | --- |
+| width | number | 800 |
+| height | number | 600 |
+| rarity | number | 100 |
+| density | number | 0.45 |
+
+* ### Usage
 
 ```js
 const genmap2d = require('genmap2d');
@@ -16,15 +23,7 @@ const map = genmap2d({
 });
 ```
 
-## Configuration
-| Param | Type | Default |
-| --- | --- | --- |
-| width | int | 800 |
-| height | int | 600 |
-| rarity | int | 100 |
-| density | float | 0.45 |
-
-## Example
+* ### Example
 
 ```js
 const CONFIG = {
